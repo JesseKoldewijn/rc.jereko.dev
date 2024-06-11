@@ -78,16 +78,16 @@ export const CurrentThemeDisplay = ({
   return (
     <span className="flex items-center justify-center rounded-xl px-2 py-2 border-2">
       {loading && (
-        <SymbolIcon className="animate-spin duration-1000 ease-in-out" />
+        <SymbolIcon className="w-5 h-5 animate-spin duration-1000 ease-in-out" />
       )}
       {!loading && (
         <>
           {theme === "light" ? (
-            <SunIcon />
+            <SunIcon className="w-5 h-5" />
           ) : theme === "dark" ? (
-            <MoonIcon />
+            <MoonIcon className="w-5 h-5" />
           ) : (
-            <DesktopIcon />
+            <DesktopIcon className="w-5 h-5" />
           )}
         </>
       )}
