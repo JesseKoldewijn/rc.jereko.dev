@@ -4,7 +4,7 @@ import localFont from "next/font/local";
 import "@/styles/tailwind.css";
 import "@/styles/globals.css";
 import { cookies } from "next/headers";
-import { Theme, themeConfig } from "@/config/theme";
+import { type Theme, themeConfig } from "@/config/theme";
 import ThemeToggle from "@/components/theme/ThemeToggle";
 
 const geistSans = localFont({
