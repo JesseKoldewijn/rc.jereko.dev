@@ -4,7 +4,7 @@ import localFont from "next/font/local";
 import "@/styles/tailwind.css";
 import "@/styles/globals.css";
 import { cookies } from "next/headers";
-import { themeConfig } from "@/config/theme";
+import { Theme, themeConfig } from "@/config/theme";
 import ThemeToggle from "@/components/theme/ThemeToggle";
 
 const geistSans = localFont({
@@ -32,7 +32,7 @@ export default function RootLayout({
 }>) {
   const cookieJar = cookies();
   const themeCookie = cookieJar.get(themeConfig.cookie.name);
-  const theme = themeCookie ? themeCookie.value : "dark";
+  const theme = themeCookie ? themeCookie.value : "system";
 
   return (
     <html lang="en" className={theme}>
@@ -40,7 +40,7 @@ export default function RootLayout({
         {children}
         <ThemeToggle
           className="fixed right-4 bottom-4 md:bottom-6 md:right-6"
-          theme="dark"
+          theme={theme as Theme}
         />
       </body>
     </html>

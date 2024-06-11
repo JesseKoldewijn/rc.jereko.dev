@@ -1,6 +1,6 @@
 "use client";
 
-import type { Theme } from "@/config/theme";
+import { themeConfig, type Theme } from "@/config/theme";
 import { cn } from "@/lib/utils";
 import {
   DesktopIcon,
@@ -8,17 +8,7 @@ import {
   SunIcon,
   SymbolIcon,
 } from "@radix-ui/react-icons";
-import type { IconProps } from "@radix-ui/react-icons/dist/types";
-import {
-  type ForwardRefExoticComponent,
-  type RefAttributes,
-  useState,
-  useLayoutEffect,
-} from "react";
-
-type IconType = ForwardRefExoticComponent<
-  IconProps & RefAttributes<SVGSVGElement>
->;
+import { useState, useLayoutEffect } from "react";
 
 interface ThemeToggleProps extends React.HTMLAttributes<HTMLDivElement> {
   theme: Theme;
@@ -30,8 +20,10 @@ const ThemeToggle = ({ theme, className, ...rest }: ThemeToggleProps) => {
   const handleToggle = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
 
-    console.log("Theme changed to", currentTheme);
-    setCurrentTheme((prev) => {
+    const current =
+      e.currentTarget.getAttribute("data-current-theme") ?? "dark";
+
+    const getNewTheme = (prev: Theme) => {
       switch (prev) {
         case "light":
           return "dark";
@@ -39,13 +31,29 @@ const ThemeToggle = ({ theme, className, ...rest }: ThemeToggleProps) => {
           return "system";
         case "system":
           return "light";
+        default:
+          return "dark";
       }
-    });
+    };
+
+    const newTheme = getNewTheme(current as Theme);
+
+    setCurrentTheme(newTheme);
+
+    document.documentElement.classList.remove("dark", "light", "system");
+    document.documentElement.classList.add(newTheme);
+
+    const newCookieTheme = `${themeConfig.cookie.name}=${newTheme}; path=/; max-age=${themeConfig.cookie.expires}; SameSite=Strict`;
+    document.cookie = newCookieTheme;
   };
 
   return (
     <div className={cn("", className)} {...rest}>
-      <button type="button" onClick={handleToggle}>
+      <button
+        type="button"
+        onClick={handleToggle}
+        data-current-theme={currentTheme}
+      >
         <CurrentThemeDisplay theme={currentTheme} />
       </button>
     </div>
